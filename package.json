@@ -16,9 +16,7 @@
     "react-dom": "19.2.3",
     "react-router-dom": "^7.13.1",
     "tailwind-merge": "3.4.0",
-    "zustand": "^5.0.12"
-  },
-  "devDependencies": {
+    "zustand": "^5.0.12",
     "@tailwindcss/vite": "4.1.17",
     "@types/node": "^22.0.0",
     "@types/react": "19.2.7",
@@ -29,5 +27,4 @@
     "vite": "7.2.4",
     "vite-plugin-singlefile": "2.3.0"
   }
-
 }
