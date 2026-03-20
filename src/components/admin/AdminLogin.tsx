@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff, BookOpen } from 'lucide-react';
 import { useAdminStore } from '../../store/adminStore';
 
@@ -7,11 +8,13 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const login = useAdminStore((state) => state.login);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (login(password)) {
       setError('');
+      navigate('/admin/panel');
     } else {
       setError('Contraseña incorrecta');
     }

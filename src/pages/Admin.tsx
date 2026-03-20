@@ -1,13 +1,13 @@
+import { Navigate } from 'react-router-dom';
 import { useAdminStore } from '../store/adminStore';
 import AdminLogin from '../components/admin/AdminLogin';
-import AdminPanel from '../components/admin/AdminPanel';
 
 export default function Admin() {
   const isAuthenticated = useAdminStore((state) => state.isAuthenticated);
 
-  if (!isAuthenticated) {
-    return <AdminLogin />;
+  if (isAuthenticated) {
+    return <Navigate to="/admin/panel" replace />;
   }
 
-  return <AdminPanel />;
+  return <AdminLogin />;
 }

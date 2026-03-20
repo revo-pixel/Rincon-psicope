@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: rincon-psicope
+    name: rincon-psicope-v2
     env: static
     buildCommand: npm install && chmod -R +x node_modules/.bin && npx vite build
     staticPublishPath: dist
