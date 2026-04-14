@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../components/Header';
+import { useProductStore } from '../store/productStore';
 import Hero from '../components/Hero';
 import ProductsSection from '../components/ProductsSection';
 import Features from '../components/Features';
@@ -13,6 +14,11 @@ import WhatsAppButton from '../components/WhatsAppButton';
 export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const fetchProducts = useProductStore((state) => state.fetchProducts);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handleCheckout = () => {
     setIsCartOpen(false);
