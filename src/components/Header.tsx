@@ -24,13 +24,13 @@ export default function Header({ onCartClick }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <img src="/logo.png" alt="Entre Rizos Psicope" className="h-20 md:h-24 w-auto" />
+          <Link to="/" className="flex items-center gap-4 group">
+            <img src="/logo.png" alt="Entre Rizos Psicope" className="h-28 md:h-32 w-auto" />
             <div className="flex flex-col">
-              <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-500 via-pink-500 to-green-500 bg-clip-text text-transparent leading-tight">
+              <span className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 via-pink-500 to-green-500 bg-clip-text text-transparent leading-tight">
                 Entre Rizos
               </span>
-              <span className="text-sm md:text-base text-gray-700 font-semibold -mt-1">
+              <span className="text-base md:text-lg text-gray-800 font-bold -mt-1">
                 Psicope
               </span>
             </div>
