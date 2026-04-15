@@ -24,16 +24,14 @@ export default function Header({ onCartClick }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="bg-gradient-to-br from-rose-400 to-purple-500 p-2 rounded-xl shadow-md group-hover:shadow-lg transition-shadow">
-              <BookOpen className="w-6 h-6 md:w-8 md:h-8 text-white" />
-            </div>
+          <Link to="/" className="flex items-center gap-2 group">
+            <img src="/logo.png" alt="Entre Rizos Psicope" className="h-10 md:h-12 w-auto" />
             <div className="flex flex-col">
-              <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent">
-                Rincón Psicope
+              <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-blue-500 via-pink-500 to-green-500 bg-clip-text text-transparent">
+                Entre Rizos
               </span>
               <span className="text-[10px] md:text-xs text-gray-500 -mt-1">
-                Material Psicopedagógico
+                Psicope
               </span>
             </div>
           </Link>

@@ -24,8 +24,9 @@ export default function ProductsSection() {
       ? products
       : products.filter((p) => p.category === activeCategory);
 
-  // Animación: el título y badge aparecen al hacer scroll
   useGSAP(() => {
+    if (filteredProducts.length === 0) return;
+
     gsap.from('[data-products="header"] > *', {
       autoAlpha: 0,
       y: 30,
@@ -37,21 +38,7 @@ export default function ProductsSection() {
         start: 'top 85%',
       },
     });
-
-    // Las cards aparecen de abajo hacia arriba en cascada
-    gsap.from('[data-products="grid"] > *', {
-      autoAlpha: 0,
-      y: 50,
-      scale: 0.95,
-      duration: 0.6,
-      ease: 'power3.out',
-      stagger: 0.12,
-      scrollTrigger: {
-        trigger: '[data-products="grid"]',
-        start: 'top 85%',
-      },
-    });
-  }, { scope: sectionRef, dependencies: [filteredProducts] });
+  }, { scope: sectionRef, dependencies: [] });
 
   return (
     <section id="productos" className="py-16 md:py-24 bg-white" ref={sectionRef}>
