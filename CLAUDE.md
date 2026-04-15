@@ -1,7 +1,9 @@
-# CLAUDE.md — Rincón Psicope
+# CLAUDE.md — Entre Rizos Psicope
 
 ## Descripción del Proyecto
 E-commerce de materiales psicopedagógicos digitales (kits de informes, guías, packs de actividades, protocolos). El flujo de venta actual cierra por WhatsApp. Cliente: psicopedagoga.
+
+**Branding:** Entre Rizos Psicope. Logo en Header (h-28/h-32) y de fondo en Hero (opacity-35).
 
 ## Repositorio
 - **GitHub:** https://github.com/revo-pixel/Rincon-psicope.git
@@ -73,7 +75,7 @@ src/
 6. **NO usar GSAP con `autoAlpha: 0` en elementos que cargan async** — quedan congelados si ya están en viewport cuando llegan los datos
 
 ## Animaciones activas
-- **Hero.tsx:** Timeline de entrada (badge → título → subtítulo → botones → stats) + blobs flotando
+- **Hero.tsx:** Timeline de entrada (badge → título → subtítulo → botones → stats) + blobs flotando + logo de fondo (opacity-35)
 - **ProductCard.tsx:** Hover `y: -8, scale: 1.02` + zoom imagen `scale: 1.07`
 - **ProductsSection.tsx:** Scroll reveal solo del header. Las cards NO tienen animación GSAP (se quitó por conflicto con carga asíncrona de Supabase)
 
@@ -123,6 +125,7 @@ interface CustomerData { fullName, email, phone, address, city, paymentMethod: '
 - Variables/funciones: camelCase
 - Solo Tailwind CSS, sin CSS custom salvo excepciones
 - Precios: `Intl.NumberFormat` con locale `es-AR` y currency `ARS`
+- **NO hacer push por cada cambio.** Solo cuando se pida explícitamente.
 
 ---
 

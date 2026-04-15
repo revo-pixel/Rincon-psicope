@@ -50,13 +50,12 @@ export default function Hero() {
         <div ref={blob1Ref} className="absolute top-20 left-10 w-72 h-72 bg-rose-200 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
         <div ref={blob2Ref} className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
         <div ref={blob3Ref} className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
+        <img src="/logo.png" alt="Entre Rizos Psicope" className="absolute inset-0 mx-auto my-auto h-96 md:h-full w-auto opacity-35 pointer-events-none object-contain" />
       </div>
 
       {/* Contenido */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32">
         <div className="text-center">
-
-          <img src="/logo.png" alt="Entre Rizos Psicope" className="h-40 md:h-48 w-auto mx-auto mb-6" />
 
           <div data-hero="badge" className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-md border border-rose-100 mb-6">
             <Sparkles className="w-4 h-4 text-rose-500" />
