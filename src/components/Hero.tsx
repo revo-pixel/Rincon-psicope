@@ -53,10 +53,8 @@ export default function Hero() {
       </div>
 
       {/* Contenido */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
         <div className="text-center">
-
-          <img src="/logo.png" alt="Entre Rizos Psicope" className="h-48 md:h-56 w-auto mx-auto mb-8" />
 
           <div data-hero="badge" className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-md border border-rose-100 mb-6">
             <Sparkles className="w-4 h-4 text-rose-500" />
