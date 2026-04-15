@@ -13,7 +13,7 @@ export const useAdminStore = create<AdminState>()(
   persist(
     (set, get) => ({
       isAuthenticated: false,
-      password: '1234',
+      password: 'psicope1096',
       login: (inputPassword: string) => {
         if (inputPassword === get().password) {
           set({ isAuthenticated: true });

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LogOut, Package, Settings, Plus, Search } from 'lucide-react';
 import { useAdminStore } from '../../store/adminStore';
 import { useProductStore } from '../../store/productStore';
@@ -10,6 +10,11 @@ export default function AdminPanel() {
   const logout = useAdminStore((state) => state.logout);
   const products = useProductStore((state) => state.products);
   const deleteProduct = useProductStore((state) => state.deleteProduct);
+  const fetchProducts = useProductStore((state) => state.fetchProducts);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
   
   const [activeTab, setActiveTab] = useState<'products' | 'settings'>('products');
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -105,7 +110,7 @@ export default function AdminPanel() {
               </div>
               <button
                 onClick={() => setIsAddingProduct(true)}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-rose-500 to-purple-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-linear-to-r from-rose-500 to-purple-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
               >
                 <Plus className="w-5 h-5" />
                 Nuevo Producto
