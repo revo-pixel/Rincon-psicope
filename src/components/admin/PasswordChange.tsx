@@ -3,7 +3,7 @@ import { Lock, Eye, EyeOff, Check } from 'lucide-react';
 import { useAdminStore } from '../../store/adminStore';
 
 export default function PasswordChange() {
-  const { password: currentPassword, changePassword } = useAdminStore();
+  const { login, changePassword } = useAdminStore();
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -25,12 +25,13 @@ export default function PasswordChange() {
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
 
     // Validate current password
-    if (formData.currentPassword !== currentPassword) {
+    const verifyResult = await login(formData.currentPassword);
+    if (!verifyResult.success) {
       setMessage({ type: 'error', text: 'La contraseña actual es incorrecta' });
       return;
     }
@@ -48,20 +49,24 @@ export default function PasswordChange() {
     }
 
     // Change password
-    changePassword(formData.newPassword);
-    setMessage({ type: 'success', text: 'Contraseña actualizada correctamente' });
-    setFormData({
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    });
+    const changeResult = await changePassword(formData.newPassword);
+    if (changeResult.success) {
+      setMessage({ type: 'success', text: 'Contraseña actualizada correctamente' });
+      setFormData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+    } else {
+      setMessage({ type: 'error', text: 'Hubo un error: ' + changeResult.error });
+    }
   };
 
   return (
     <div className="max-w-lg mx-auto">
       <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
         <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-rose-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-linear-to-br from-rose-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Lock className="w-8 h-8 text-rose-500" />
           </div>
           <h2 className="text-xl font-bold text-gray-800">Cambiar Contraseña</h2>
@@ -160,7 +165,7 @@ export default function PasswordChange() {
 
           <button
             type="submit"
-            className="w-full py-4 bg-gradient-to-r from-rose-500 to-purple-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all"
+            className="w-full py-4 bg-linear-to-r from-rose-500 to-purple-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all"
           >
             Actualizar contraseña
           </button>

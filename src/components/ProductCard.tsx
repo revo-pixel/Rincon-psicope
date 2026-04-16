@@ -104,7 +104,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
           </button>
           <button
             onClick={() => addToCart(product)}
-            className="flex-1 py-2.5 px-4 bg-gradient-to-r from-rose-500 to-purple-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm"
+            className="flex-1 py-2.5 px-4 bg-gradient-to-r from-pink-300 to-purple-300 text-white font-semibold rounded-xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm font-display"
           >
             <ShoppingCart className="w-4 h-4" />
             Agregar

@@ -10,23 +10,27 @@ export default function AdminLogin() {
   const login = useAdminStore((state) => state.login);
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    if (login(password)) {
+  const handleSubmit = async () => {
+    const result = await login(password);
+    if (result.success) {
       setError('');
       navigate('/admin/panel');
     } else {
-      setError('Contraseña incorrecta');
+      console.error(result.error);
+      setError(result.error === 'Email not confirmed' 
+        ? 'Debes confirmar el correo en Supabase (activa autoconfirmación)' 
+        : 'Credenciales inválidas o contraseña incorrecta');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-100 via-pink-50 to-purple-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-rose-100 via-pink-50 to-purple-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
 
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="bg-gradient-to-br from-rose-400 to-purple-500 p-3 rounded-2xl shadow-lg">
+            <div className="bg-linear-to-brrom-rose-400 to-purple-500 p-3 rounded-2xl shadow-lg">
               <BookOpen className="w-8 h-8 text-white" />
             </div>
           </div>
@@ -37,7 +41,7 @@ export default function AdminLogin() {
         {/* Login */}
         <div className="bg-white rounded-3xl shadow-2xl p-8">
           <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-rose-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-linear-to-br from-rose-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Lock className="w-8 h-8 text-rose-500" />
             </div>
             <h2 className="text-xl font-bold text-gray-800">Acceso Restringido</h2>
@@ -57,6 +61,9 @@ export default function AdminLogin() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-12 pr-12 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  autoComplete="current-password"
                   placeholder="••••••••"
                 />
                 <button
@@ -78,7 +85,7 @@ export default function AdminLogin() {
             <button
               type="button"
               onClick={handleSubmit}
-              className="w-full py-4 bg-gradient-to-r from-rose-500 to-purple-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all"
+              className="w-full py-4 bg-linear-to-r from-rose-500 to-purple-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all"
             >
               Ingresar
             </button>

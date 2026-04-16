@@ -3,7 +3,7 @@
 ## Descripción del Proyecto
 E-commerce de materiales psicopedagógicos digitales (kits de informes, guías, packs de actividades, protocolos). El flujo de venta actual cierra por WhatsApp. Cliente: psicopedagoga.
 
-**Branding:** Entre Rizos Psicope. Logo en Header (h-28/h-32) y de fondo en Hero (opacity-35).
+**Branding:** Entre Rizos Psicope. Logo en Header (h-28/h-32) y de fondo en Hero (opacity-100, mayor tamaño, reposicionado en la zona inferior).
 
 ## Repositorio
 - **GitHub:** https://github.com/revo-pixel/Rincon-psicope.git
@@ -28,7 +28,11 @@ E-commerce de materiales psicopedagógicos digitales (kits de informes, guías, 
 ```
 src/
 ├── components/
-│   ├── admin/AdminPanel.tsx
+│   ├── admin/
+│   │   ├── AdminLogin.tsx
+│   │   ├── AdminPanel.tsx
+│   │   ├── PasswordChange.tsx
+│   │   └── ProductEditor.tsx
 │   ├── Cart.tsx
 │   ├── CheckoutModal.tsx
 │   ├── CTA.tsx
@@ -51,6 +55,7 @@ src/
 │   └── productStore.ts       ← conectado a Supabase
 ├── types/index.ts
 └── utils/
+    └── cn.ts
 ```
 
 ## Rutas
@@ -75,7 +80,7 @@ src/
 6. **NO usar GSAP con `autoAlpha: 0` en elementos que cargan async** — quedan congelados si ya están en viewport cuando llegan los datos
 
 ## Animaciones activas
-- **Hero.tsx:** Timeline de entrada (badge → título → subtítulo → botones → stats) + blobs flotando + logo de fondo (opacity-35)
+- **Hero.tsx:** Timeline de entrada (badge → título → subtítulo → botones → stats) + blobs flotando + logo de fondo (opacity-100, tamaño aumentado y posicionado detrás de barra inferior)
 - **ProductCard.tsx:** Hover `y: -8, scale: 1.02` + zoom imagen `scale: 1.07`
 - **ProductsSection.tsx:** Scroll reveal solo del header. Las cards NO tienen animación GSAP (se quitó por conflicto con carga asíncrona de Supabase)
 
@@ -85,6 +90,11 @@ src/
 - URL: `https://ctfhyftixrnlwvjensqz.supabase.co`
 - Key: `sb_publishable_HAvS05ejG9MASgdrT1BMkw_qyrlSoUU`
 - Región: South America (São Paulo)
+
+### Autenticación (Auth)
+- Integrado con **Supabase Auth** para el panel de administración.
+- Logueo con Email y Contraseña (ej. `admin@psicope.com`).
+- Configuración en el panel de Supabase: Proveedor Email habilitado con opción de "Confirm email" **desactivada**.
 
 ### Tabla: `products`
 | Campo | Tipo |
@@ -111,7 +121,7 @@ src/
 ## Estado Global (Zustand)
 - **productStore:** sin persist, conectado a Supabase. `fetchProducts()` se llama en `Home.tsx` via `useEffect`
 - **cartStore:** con persist en localStorage
-- **adminStore:** auth solo client-side (NO segura — pendiente migrar a Supabase Auth)
+- **adminStore:** Integrado completamente con Supabase Auth (gestión de sesión con verificación inicial `checkSession`, login asíncrono, logout y cambio de contraseña seguro).
 
 ## Tipos principales
 ```ts
@@ -133,11 +143,10 @@ interface CustomerData { fullName, email, phone, address, city, paymentMethod: '
 
 | # | Tarea | Prioridad |
 |---|---|---|
-| 1 | **Supabase Auth** para admin (reemplazar adminStore client-side) | Alta |
-| 2 | **Tabla `orders`** en Supabase (`id, cart_json, customer_email, payment_id, status`) | Alta |
-| 3 | **MercadoPago** — integración real en checkout (actualmente deriva a WhatsApp) | Alta |
-| 4 | **Supabase Storage** — subida de imágenes desde admin panel (actualmente URLs de Unsplash) | Media |
-| 5 | **Deploy en Vercel** — conectar GitHub + env vars | Media |
-| 6 | **Página de éxito/error** post-pago | Media |
-| 7 | **Email de confirmación** al comprador (Resend, 3k emails/mes gratis) | Baja |
-| 8 | **SEO** — meta tags, Open Graph, favicon | Baja |
+| 1 | **Tabla `orders`** en Supabase (`id, cart_json, customer_email, payment_id, status`) | Alta |
+| 2 | **MercadoPago** — integración real en checkout (actualmente deriva a WhatsApp) | Alta |
+| 3 | **Supabase Storage** — subida de imágenes desde admin panel (actualmente URLs de Unsplash) | Media |
+| 4 | **Deploy en Vercel** — conectar GitHub + env vars | Media |
+| 5 | **Página de éxito/error** post-pago | Media |
+| 6 | **Email de confirmación** al comprador (Resend, 3k emails/mes gratis) | Baja |
+| 7 | **SEO** — meta tags, Open Graph, favicon | Baja |
