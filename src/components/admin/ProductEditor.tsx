@@ -19,6 +19,7 @@ export default function ProductEditor({ product, onClose }: ProductEditorProps) 
     price: product?.price?.toString() || '',
     category: product?.category || '',
     images: product?.images || [''],
+    type: product?.type || 'digital',
   });
 
   const handleInputChange = (
@@ -56,6 +57,7 @@ export default function ProductEditor({ product, onClose }: ProductEditorProps) 
       price: parseFloat(formData.price) || 0,
       category: formData.category,
       images: formData.images.filter((img) => img.trim() !== ''),
+      type: formData.type as 'digital' | 'physical',
     };
 
     if (isEditing) {
@@ -103,6 +105,21 @@ export default function ProductEditor({ product, onClose }: ProductEditorProps) 
             />
           </div>
 
+          {/* Tipo de producto */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tipo de producto *
+            </label>
+            <select
+              name="type"
+              value={formData.type}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+            >
+              <option value="digital">Digital</option>
+              <option value="physical">Físico</option>
+            </select>
+          </div>
           {/* Category & Price */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>

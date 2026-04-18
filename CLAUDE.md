@@ -1,7 +1,7 @@
 # CLAUDE.md — Entre Rizos Psicope
 
 ## Descripción del Proyecto
-E-commerce de materiales psicopedagógicos digitales (kits de informes, guías, packs de actividades, protocolos). El flujo de venta actual cierra por WhatsApp. Cliente: psicopedagoga.
+E-commerce de materiales psicopedagógicos digitales y físicos (kits de informes, guías, packs de actividades, protocolos). El flujo de venta actual cierra por WhatsApp. Cliente: psicopedagoga.
 
 **Branding:** Entre Rizos Psicope. Logo en Header (h-28/h-32) y de fondo en Hero (opacity-100, mayor tamaño, reposicionado en la zona inferior).
 
@@ -107,6 +107,7 @@ src/
 | category | text |
 | images | text[] |
 | featured | boolean |
+| type | text ('digital' \| 'physical'), default 'digital' |
 | created_at | timestamptz |
 
 ### RLS
@@ -115,7 +116,7 @@ src/
 
 ### Mapeo snake_case → camelCase (productStore.ts)
 ```ts
-{ short_description → shortDescription, description → fullDescription }
+{ short_description → shortDescription, description → fullDescription, type → type }
 ```
 
 ## Estado Global (Zustand)
@@ -125,10 +126,19 @@ src/
 
 ## Tipos principales
 ```ts
-interface Product { id, name, shortDescription, fullDescription, price, images[], category, featured? }
+interface Product { id, name, shortDescription, fullDescription, price, images[], category, featured?, type: 'digital' | 'physical' }
 interface CartItem { product: Product, quantity: number }
-interface CustomerData { fullName, email, phone, address, city, paymentMethod: 'mercadopago' | 'transfer' }
+interface CustomerData { fullName, email, phone, address?, city?, postalCode?, streetsBetween?, paymentMethod: 'mercadopago' | 'transfer' }
 ```
+
+## Lógica de checkout
+- `hasPhysical = items.some(item => item.product.type === 'physical')`
+- Si `hasPhysical` es `true` → se muestran campos de envío: dirección, ciudad, código postal, entre calles
+- Si el carrito es solo digital → no se piden datos de envío
+- El campo `type` se configura desde `ProductEditor.tsx` en el admin panel
+
+## AdminLogin — fixes móvil
+- Input de contraseña tiene `autoCapitalize="none"`, `autoCorrect="off"`, `autoComplete="current-password"` para evitar que el teclado móvil modifique la contraseña
 
 ## Convenciones
 - Archivos: PascalCase (`ProductCard.tsx`)

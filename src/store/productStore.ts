@@ -13,6 +13,7 @@ function mapProduct(row: any): Product {
     category: row.category,
     images: row.images ?? [],
     featured: row.featured ?? false,
+    type: row.type ?? 'digital',
   };
 }
 
@@ -62,6 +63,7 @@ export const useProductStore = create<ProductState>()((set, get) => ({
         category: product.category,
         images: product.images,
         featured: product.featured ?? false,
+        type: product.type ?? 'digital',
       }])
       .select()
       .single();
@@ -86,6 +88,7 @@ export const useProductStore = create<ProductState>()((set, get) => ({
         category: updatedData.category,
         images: updatedData.images,
         featured: updatedData.featured,
+        type: updatedData.type,
       })
       .eq('id', id)
       .select()

@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import Admin from './pages/Admin';
 import AdminPanel from './components/admin/AdminPanel';
 import { useAdminStore } from './store/adminStore';
+import Success from './pages/Success';
+import Failure from './pages/Failure';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAdminStore((state) => state.isAuthenticated);
@@ -29,6 +31,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/failure" element={<Failure />} />
         <Route path="/admin/panel" element={
           <ProtectedRoute>
             <AdminPanel />

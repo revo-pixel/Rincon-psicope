@@ -7,6 +7,7 @@ export interface Product {
   images: string[];
   category: string;
   featured?: boolean;
+  type: 'digital' | 'physical';
 }
 
 export interface CartItem {
@@ -18,7 +19,9 @@ export interface CustomerData {
   fullName: string;
   email: string;
   phone: string;
-  address: string;
-  city: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  streetsBetween?: string;
   paymentMethod: 'mercadopago' | 'transfer';
 }

@@ -10,6 +10,8 @@ interface CheckoutModalProps {
 
 export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const { items, getTotalPrice, clearCart } = useCartStore();
+  const hasPhysical = items.some(item => item.product.type === 'physical');
+  
   const [customerData, setCustomerData] = useState<CustomerData>({
     fullName: '',
     email: '',
@@ -19,6 +21,7 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     paymentMethod: 'mercadopago',
   });
   const [step, setStep] = useState<'form' | 'payment'>('form');
+const [loading, setLoading] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('es-AR', {
@@ -38,11 +41,41 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     setStep('payment');
   };
 
-  const handleMercadoPago = () => {
-    // Simular pago con MercadoPago
-    alert('Redirigiendo a MercadoPago...\n\n(En producción, aquí se integraría con la API de MercadoPago)');
-    clearCart();
-    onClose();
+  const handleMercadoPago = async () => {
+    setLoading(true);
+    try {
+      const mpItems = items.map(item => ({
+        title: item.product.name,
+        quantity: item.quantity,
+        unit_price: item.product.price,
+        currency_id: 'ARS',
+      }));
+
+      const response = await fetch('/api/create-preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: mpItems,
+          payer: { email: customerData.email, name: customerData.fullName },
+          back_urls: {
+            success: 'https://entrerizospsicope.vercel.app/success',
+            failure: 'https://entrerizospsicope.vercel.app/failure',
+            pending: 'https://entrerizospsicope.vercel.app/success',
+          },
+        }),
+      });
+
+      const data = await response.json();
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert('Error al conectar con MercadoPago. Intente nuevamente.');
+      }
+    } catch (err) {
+      alert('Error al conectar con MercadoPago. Intente nuevamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleWhatsAppTransfer = () => {
@@ -157,11 +190,11 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                 </div>
               </div>
 
-              {/* Address */}
+              {hasPhysical && (
               <div>
                 <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-rose-500" />
-                  Dirección
+                  Dirección de envío
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
@@ -173,7 +206,6 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                       <input
                         type="text"
                         name="address"
-                        value={customerData.address}
                         onChange={handleInputChange}
                         required
                         className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
@@ -190,7 +222,6 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                       <input
                         type="text"
                         name="city"
-                        value={customerData.city}
                         onChange={handleInputChange}
                         required
                         className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
@@ -198,8 +229,40 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                       />
                     </div>
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Código postal
+                    </label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        name="postalCode"
+                        onChange={handleInputChange}
+                        required
+                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
+                        placeholder="Ej: 1234"
+                      />
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Entre calles
+                    </label>
+                    <div className="relative">
+                      <Home className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        name="streetsBetween"
+                        onChange={handleInputChange}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
+                        placeholder="Ej: Av. Corrientes y Callao"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+              )}
 
               {/* Payment Method */}
               <div>
@@ -314,10 +377,11 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                   </div>
                   <button
                     onClick={handleMercadoPago}
-                    className="w-full py-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
+                    disabled={loading}
+                    className="w-full py-4 bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
                   >
                     <CreditCard className="w-5 h-5" />
-                    Pagar con MercadoPago
+                    {loading ? 'Redirigiendo...' : 'Pagar con MercadoPago'}
                   </button>
                 </div>
               ) : (
